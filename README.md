@@ -45,7 +45,7 @@ python3 -m pip install Pillow
 
 ```bash
 # Claude Code
-git clone https://github.com/<you>/capcut-video-highlights.git \
+git clone https://github.com/charleshan7/capcut-video-highlights.git \
   ~/.claude/skills/capcut-video-highlights
 # 跨运行时通用别名:~/.agents/skills/
 ```
