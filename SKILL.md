@@ -1,9 +1,9 @@
 ---
-name: capcut-video-highlights
+name: reelsmith
 description: Use when turning a meeting recording or local video clips (e.g. 腾讯会议/飞书录制、DJI/手机素材) into a highlight package — selecting clips, adding a title card and subtitles, and delivering either a CapCut/剪映 editable draft or a finished MP4. Also use to insert/append extra highlights into an already-rendered cut. Adapts to the local environment instead of assuming fixed paths or tools.
 ---
 
-# CapCut / 剪映 Video Highlights (自适应版)
+# reelsmith — CapCut / 剪映 视频集锦(自适应版)
 
 ## 核心原则
 

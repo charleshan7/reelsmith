@@ -1,4 +1,4 @@
-# CapCut / 剪映 Video Highlights — 自适应剪辑 Skill
+# reelsmith — CapCut / 剪映 自适应集锦剪辑 Skill
 
 一个给 AI Agent(Claude Code / Codex / 等支持 [Agent Skills](https://agentskills.io) 的运行时)用的**视频集锦剪辑工作流 skill**:把会议录制或一堆本地素材,变成带片头标题卡和字幕的高光成片——**自动适配你的机器**,而不是写死路径和工具。
 
@@ -17,7 +17,7 @@
 ## 目录结构
 
 ```
-capcut-video-highlights/
+reelsmith/
 ├── SKILL.md                # 主工作流(Agent 读这个)
 ├── scripts/
 │   ├── detect_env.sh       # 环境探测:工具/字体/草稿格式/硬件加速/磁盘
@@ -45,8 +45,8 @@ python3 -m pip install Pillow
 
 ```bash
 # Claude Code
-git clone https://github.com/charleshan7/capcut-video-highlights.git \
-  ~/.claude/skills/capcut-video-highlights
+git clone https://github.com/charleshan7/reelsmith.git \
+  ~/.claude/skills/reelsmith
 # 跨运行时通用别名:~/.agents/skills/
 ```
 
