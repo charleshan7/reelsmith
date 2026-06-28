@@ -1,0 +1,6 @@
+interface:
+  display_name: "CapCut Video Highlights"
+  short_description: "Meeting recording to 剪映 project workflow"
+  default_prompt: "Use $capcut-video-highlights to turn a meeting recording link into planned clips and a CapCut/剪映 draft."
+policy:
+  allow_implicit_invocation: true

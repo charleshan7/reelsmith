@@ -1,0 +1,26 @@
+# Work outputs — never commit media or per-project working dirs
+*.mp4
+*.mov
+*.MP4
+*.MOV
+*.jpg
+*.jpeg
+*.png
+*.mp3
+*.wav
+
+# Python
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
+__MACOSX/
+
+# Scratch / working folders
+build/
+clips/
+source/
+checks/
+assets/
+*.tmp
