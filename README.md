@@ -1,77 +1,69 @@
-# reelsmith — CapCut / 剪映 自适应集锦剪辑 Skill
+# reelsmith — 让 AI 帮你把视频自动剪成精华短片
 
-一个给 AI Agent(Claude Code / Codex / 等支持 [Agent Skills](https://agentskills.io) 的运行时)用的**视频集锦剪辑工作流 skill**:把会议录制或一堆本地素材,变成带片头标题卡和字幕的高光成片——**自动适配你的机器**,而不是写死路径和工具。
+reelsmith 是给 AI 助手用的一份"剪辑说明书"。你把一段录屏、会议录像,或者一堆手机/相机拍的视频丢给 AI,它就能帮你**自动挑出精彩片段、加上标题和字幕、拼成一个干净的短片**——你不用会任何剪辑软件,也不用自己动手。
 
-> An adaptive skill that turns meeting recordings or local clips into a highlight package (title card + subtitles), delivering either an editable CapCut/剪映 draft **or** a finished MP4 — whichever the local environment actually supports.
+> An "agent skill" that lets an AI assistant turn your raw recordings or clips into a polished highlight video — auto-selecting the good parts, adding a title and subtitles. No editing skills required.
 
-## 为什么是"自适应"
+## 它能帮你做什么
 
-市面上很多剪辑 skill 把作者那台机器的路径、工具、剪映版本写死了,换一台就崩。这个 skill 的第一步永远是**探测环境**,再据此分支:
+- 从一段长视频、或一堆零散片段里**自动挑出精华**
+- 加上**片头标题**和**字幕**
+- 拼成一个成片视频(MP4 文件),手机、电脑都能直接播放,也能发抖音 / 小红书 / 朋友圈
+- 想做加长版、想再插一段新素材、想配背景音乐、想换字幕——再说一句话就行
 
-- **剪映草稿是明文** → 直接生成可在 app 里编辑的剪映工程。
-- **剪映草稿是加密的**(剪映专业版 10.x 起就加密了)→ 自动降级,产出烧好字幕的 MP4 成片。
-- **ffmpeg 没编 drawtext**(Homebrew 版常见)→ 改用 PIL 渲染文字再 overlay。
-- **支持 VideoToolbox** → 4K/HEVC 走硬件加速,快数倍。
-- **字体/草稿目录/工具** → 全部探测,带跨平台回退。
+## 怎么用(很简单)
 
-## 目录结构
+装好之后,直接对你的 AI 助手**说人话**就行,比如:
 
-```
-reelsmith/
-├── SKILL.md                # 主工作流(Agent 读这个)
-├── scripts/
-│   ├── detect_env.sh       # 环境探测:工具/字体/草稿格式/硬件加速/磁盘
-│   └── render_text.py      # 文字→透明PNG(字体回退·自动换行·横竖屏),供 ffmpeg overlay
-├── agents/openai.yaml      # Codex/OpenAI 运行时的元数据(可选)
-├── LICENSE
-└── README.md
-```
+- “把这段会议录屏剪个一分钟的精华”
+- “这几个旅游视频,挑好看的拼成一个短片,放到下载文件夹”
+- “再做一个加长版” / “把这段也剪进去” / “配个背景音乐”
 
-## 依赖
+AI 会自己看画面、挑片段、配字幕,然后把成片交给你。
 
-- **必需**:`ffmpeg` / `ffprobe`、`python3` + `Pillow`(PIL)
-- **可选**:`node`(生成/校验剪映工程 JSON)、`capcut-cli` / `cutCLI`(若已装可辅助)
-- **平台**:主要在 macOS 验证(VideoToolbox、剪映草稿路径);脚本对 Linux 字体路径做了回退。
+## 它有什么不一样
+
+很多类似工具,把作者那台电脑的设置写死了,换一台机器就报错。reelsmith **每次开工前会先自动检查你的电脑**(装了哪些工具、有什么字体、能不能用硬件加速),再挑最稳、最快的做法。所以它在不同电脑上都更不容易坏。
+
+## 需要先装两个免费工具(一次就够)
+
+把下面两行,粘到电脑的"终端"里回车即可(以 Mac 为例):
 
 ```bash
-# macOS
 brew install ffmpeg
 python3 -m pip install Pillow
 ```
 
-## 安装
+- **ffmpeg**:免费开源的视频处理引擎,真正"动手剪"的就是它
+- **Pillow**:用来把字幕做成文字图片
 
-把整个文件夹放进你运行时的 skills 目录:
+## 安装 reelsmith
+
+下载到 AI 助手的技能目录即可:
 
 ```bash
-# Claude Code
 git clone https://github.com/charleshan7/reelsmith.git \
   ~/.claude/skills/reelsmith
-# 跨运行时通用别名:~/.agents/skills/
 ```
 
-## 用法
+## 小贴士
 
-直接对 Agent 说,例如:
+- 成品是一个 **MP4 视频文件**,可以直接发布,也能再拖进任何剪辑软件继续加工。
+- 处理 4K 这种大视频会比较慢,它会自动用硬件加速(如果你的电脑支持)。
+- 默认横屏 16:9;需要竖屏(适合抖音/小红书)也可以,跟 AI 说一声。
 
-- “我给你一个腾讯会议录制链接,帮我剪视频集锦”
-- “这几个本地视频,取精华剪成一个高光,放下载夹”
-- “把这段也剪进已有的成片里”
+## 文件说明(给好奇的人)
 
-Agent 会:探测环境 → 写剪辑方案 → 切片 → 加片头/字幕 → 按环境产出剪映工程或 MP4。
-
-也可单独跑脚本:
-
-```bash
-bash scripts/detect_env.sh
-python3 scripts/render_text.py "字幕文字" out.png --size 60 --canvas 1920x1080
 ```
-
-## 已知限制
-
-- **加密版剪映无法自动生成可编辑工程**——这是剪映自身的加密,非本 skill 缺陷;此时产出 MP4,你仍可把素材/成片导入剪映手动再编。
-- 剪映工程生成路径仅在明文草稿版本上验证过。
+reelsmith/
+├── SKILL.md          # 给 AI 读的主流程
+├── scripts/
+│   ├── detect_env.sh # 自动检查电脑环境
+│   └── render_text.py # 把文字做成字幕图片
+├── LICENSE
+└── README.md
+```
 
 ## License
 
-MIT — 见 [LICENSE](LICENSE)。
+MIT — 见 [LICENSE](LICENSE)。作者:feifeidouya
